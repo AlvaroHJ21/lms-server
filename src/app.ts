@@ -5,7 +5,10 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 
 import errorMiddleware from './middleware/error';
+
 import userRoute from './routes/user.route';
+import courseRoute from './routes/course.route';
+
 import { ErrorHandler } from './utils/ErrorHandler';
 import { catchAsyncError } from './middleware/catchAsyncErrors';
 
@@ -32,7 +35,9 @@ app.get(
   })
 );
 
+// routes
 app.use('/api/v1/users', userRoute);
+app.use('/api/v1/courses', courseRoute);
 
 // unknow route
 app.all('*', (req: Request, res: Response, next: NextFunction) => {
