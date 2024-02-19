@@ -6,6 +6,7 @@ import {
   addReview,
   editCourse,
   getAllCourses,
+  getAllCoursesAdmin,
   getCourseByUser,
   getSingleCourse,
   uploadCourse,
@@ -23,5 +24,6 @@ router.post('/add-question', isAuthenticated, addQuestion);
 router.post('/add-answer', isAuthenticated, addAnswer);
 router.post('/add-review/:id', isAuthenticated, addReview);
 router.post('/add-reply-review', isAuthenticated, authorizeRoles('admin'), addReplyToReview);
+router.get('/get-all', isAuthenticated, authorizeRoles('admin'), getAllCoursesAdmin);
 
 export default router;

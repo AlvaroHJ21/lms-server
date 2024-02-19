@@ -1,6 +1,6 @@
 import { catchAsyncError } from '../middleware/catchAsyncErrors';
 import CourseModel from '../models/course.model';
-import { createCourse } from '../services/course.service';
+import { createCourse, getAllCoursesService } from '../services/course.service';
 import { ErrorHandler } from '../utils/ErrorHandler';
 import cloudinary from 'cloudinary';
 import { redis } from '../utils/redis';
@@ -398,6 +398,19 @@ export const addReplyToReview = catchAsyncError(async (req, res, next) => {
     res.status(200).json({
       success: true,
       course,
+    });
+  } catch (error: any) {
+    return next(new ErrorHandler(500, error.message));
+  }
+});
+
+// get all courses -- only admin
+export const getAllCoursesAdmin = catchAsyncError(async (req, res, next) => {
+  try {
+    const courses = await getAllCoursesService();
+    res.status(200).json({
+      success: true,
+      courses,
     });
   } catch (error: any) {
     return next(new ErrorHandler(500, error.message));

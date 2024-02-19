@@ -3,7 +3,7 @@ import CourseModel from '../models/course.model';
 import NotificationModel from '../models/notification.model';
 import { IOrder } from '../models/order.model';
 import UserModel from '../models/user.model';
-import { newOrder } from '../services/order.service';
+import { getAllOrdersService, newOrder } from '../services/order.service';
 import { ErrorHandler } from '../utils/ErrorHandler';
 import sendMail from '../utils/sendMail';
 
@@ -75,6 +75,19 @@ export const createOrder = catchAsyncError(async (req, res, next) => {
       success: true,
       message: 'Order created successfully',
       order,
+    });
+  } catch (error: any) {
+    return next(new ErrorHandler(500, error.message));
+  }
+});
+
+// get all courses -- only admin
+export const getAllOrders = catchAsyncError(async (req, res, next) => {
+  try {
+    const orders = await getAllOrdersService();
+    res.status(200).json({
+      success: true,
+      orders,
     });
   } catch (error: any) {
     return next(new ErrorHandler(500, error.message));

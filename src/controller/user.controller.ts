@@ -8,7 +8,7 @@ import sendMail from '../utils/sendMail';
 import { catchAsyncError } from '../middleware/catchAsyncErrors';
 import { accessTokenOptions, refreshTokenOptions, sendToken } from '../utils/jwt';
 import { redis } from '../utils/redis';
-import { getUserById } from '../services/user.service';
+import { getAllUserService, getUserById } from '../services/user.service';
 import cloudinary from 'cloudinary';
 
 // register user
@@ -407,8 +407,20 @@ export const updateProfilepicture = catchAsyncError(async (req, res, next) => {
       success: true,
       data: user,
     });
-
   } catch (error: any) {
     return next(new ErrorHandler(400, error.message));
+  }
+});
+
+// get all users -- only admin
+export const getAllUsers = catchAsyncError(async (req, res, next) => {
+  try {
+    const users = await getAllUserService();
+    res.status(200).json({
+      success: true,
+      users,
+    });
+  } catch (error: any) {
+    return next(new ErrorHandler(500, error.message));
   }
 });
