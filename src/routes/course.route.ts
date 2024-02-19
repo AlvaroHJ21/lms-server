@@ -4,6 +4,7 @@ import {
   addQuestion,
   addReplyToReview,
   addReview,
+  deleteCourse,
   editCourse,
   getAllCourses,
   getAllCoursesAdmin,
@@ -25,5 +26,5 @@ router.post('/add-answer', isAuthenticated, addAnswer);
 router.post('/add-review/:id', isAuthenticated, addReview);
 router.post('/add-reply-review', isAuthenticated, authorizeRoles('admin'), addReplyToReview);
 router.get('/get-all', isAuthenticated, authorizeRoles('admin'), getAllCoursesAdmin);
-
+router.delete('/delete-course/:id', isAuthenticated, authorizeRoles('admin'), deleteCourse);
 export default router;
