@@ -12,10 +12,24 @@ export const getUserById = async (id: string) => {
   return user;
 };
 
+// get all users
 export const getAllUserService = async () => {
   const users = await UserModel.find().sort({
     createdAt: -1, // latest user first
   });
 
   return users;
+};
+
+// update user role
+export const updateUserRoleService = async (id: string, role: string) => {
+  const user = await UserModel.findByIdAndUpdate(
+    id,
+    {
+      role: role,
+    },
+    { new: true }
+  );
+
+  return user;
 };

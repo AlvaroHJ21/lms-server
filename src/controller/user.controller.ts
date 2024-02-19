@@ -8,7 +8,7 @@ import sendMail from '../utils/sendMail';
 import { catchAsyncError } from '../middleware/catchAsyncErrors';
 import { accessTokenOptions, refreshTokenOptions, sendToken } from '../utils/jwt';
 import { redis } from '../utils/redis';
-import { getAllUserService, getUserById } from '../services/user.service';
+import { getAllUserService, getUserById, updateUserRoleService } from '../services/user.service';
 import cloudinary from 'cloudinary';
 
 // register user
@@ -419,6 +419,22 @@ export const getAllUsers = catchAsyncError(async (req, res, next) => {
     res.status(200).json({
       success: true,
       users,
+    });
+  } catch (error: any) {
+    return next(new ErrorHandler(500, error.message));
+  }
+});
+
+//update user role -- only for admin
+export const updateUserRole = catchAsyncError(async (req, res, next) => {
+  try {
+    const { id, role } = req.body;
+
+    const user = await updateUserRoleService(id, role);
+
+    res.status(200).json({
+      success: true,
+      user,
     });
   } catch (error: any) {
     return next(new ErrorHandler(500, error.message));
