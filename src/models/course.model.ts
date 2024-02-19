@@ -1,22 +1,6 @@
 import mongoose, { Document, Model, Schema } from 'mongoose';
 import { IUser } from './user.model';
 
-export interface User {
-  name: string;
-  email: string;
-  password: string;
-  avatar?: {
-    public_id: string;
-    url: string;
-  };
-  role: string;
-  isVerified: boolean;
-  courses: Array<{ courseId: string }>;
-  comparePassword: (password: string) => Promise<boolean>;
-  signAccessToken: () => string; // eg. caduca en 15 minutos
-  signRefreshToken: () => string; //eg. caduca en 7 días
-}
-
 export interface IComment extends Document {
   user: IUser;
   question: string;
@@ -62,7 +46,7 @@ export interface ICourse extends Document {
   reviews: IReview[];
   courseData: ICourseData[];
   ratings?: number;
-  purchased?: number;
+  purchased: number;
 }
 
 const reviewSchema = new Schema<IReview>({
@@ -71,7 +55,7 @@ const reviewSchema = new Schema<IReview>({
     type: Number,
     default: 0,
   },
-  comment: String, 
+  comment: String,
   commentReplies: [Object],
 });
 

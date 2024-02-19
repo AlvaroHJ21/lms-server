@@ -8,6 +8,8 @@ import errorMiddleware from './middleware/error';
 
 import userRoute from './routes/user.route';
 import courseRoute from './routes/course.route';
+import orderRoute from './routes/order.route';
+import notiRoute from './routes/notification.route';
 
 import { ErrorHandler } from './utils/ErrorHandler';
 import { catchAsyncError } from './middleware/catchAsyncErrors';
@@ -38,6 +40,8 @@ app.get(
 // routes
 app.use('/api/v1/users', userRoute);
 app.use('/api/v1/courses', courseRoute);
+app.use('/api/v1/orders', orderRoute);
+app.use('/api/v1/notifications', notiRoute);
 
 // unknow route
 app.all('*', (req: Request, res: Response, next: NextFunction) => {

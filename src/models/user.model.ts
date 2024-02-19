@@ -14,7 +14,7 @@ export interface IUser extends Document {
   };
   role: string;
   isVerified: boolean;
-  courses: Array<{ courseId: string }>;
+  courses: Array<{ _id: string }>;
   comparePassword: (password: string) => Promise<boolean>;
   signAccessToken: () => string; // eg. caduca en 15 minutos
   signRefreshToken: () => string; //eg. caduca en 7 días
@@ -57,7 +57,7 @@ const userSchema: Schema<IUser> = new mongoose.Schema(
     },
     courses: [
       {
-        courseId: String,
+        _id: String,
       },
     ],
   },
@@ -81,7 +81,6 @@ userSchema.set('toJSON', {
 
 // Hash Password before saving
 userSchema.pre<IUser>('save', async function (next) {
-
   // condicion: si el password no ha sido modificado
   if (!this.isModified('password')) {
     next();
@@ -109,6 +108,6 @@ userSchema.methods.comparePassword = async function (enteredPassword: string): P
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-const userModel: Model<IUser> = mongoose.model('User', userSchema);
+const UserModel: Model<IUser> = mongoose.model('User', userSchema);
 
-export default userModel;
+export default UserModel;

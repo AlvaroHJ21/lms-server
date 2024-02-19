@@ -6,6 +6,7 @@ import cloudinary from 'cloudinary';
 import { redis } from '../utils/redis';
 import mongoose from 'mongoose';
 import sendMail from '../utils/sendMail';
+import NotificationModel from '../models/notification.model';
 
 // upload course
 export const uploadCourse = catchAsyncError(async (req, res, next) => {
@@ -193,6 +194,12 @@ export const addQuestion = catchAsyncError(async (req, res, next) => {
     //add this question to our course content
     courseContent.questions.push(newQuestion);
 
+    await NotificationModel.create({
+      userId: req.user._id,
+      title: 'New Question',
+      message: `You have a new question in ${courseContent.title}`,
+    });
+
     //save the updated course
 
     await course?.save();
@@ -248,8 +255,11 @@ export const addAnswer = catchAsyncError(async (req, res, next) => {
 
     // si el usuario que responde es el mismo que hizo la pregunta, no enviamos un correo
     if (req.user?._id === question.user._id) {
-      // TODO: create a notification
-      console.log('No email sent');
+      await NotificationModel.create({
+        userId: req.user._id,
+        title: 'New Question Reply Received',
+        message: `You have a new question reply in ${courseVideo.title}`,
+      });
     } else {
       const data = {
         name: question.user.name,
@@ -326,12 +336,11 @@ export const addReview = catchAsyncError(async (req, res, next) => {
 
     await redis.set(coursId, JSON.stringify(course));
 
-    const notification = {
+    await NotificationModel.create({
+      userId: req.user._id,
       title: 'New Review Received',
       message: `${course.name} has given a review in ${course.name}`,
-    };
-
-    //TODO: create a notification
+    });
 
     res.status(200).json({
       success: true,
