@@ -14,6 +14,7 @@ import notiRoute from './routes/notification.route';
 import { ErrorHandler } from './utils/ErrorHandler';
 import { catchAsyncError } from './middleware/catchAsyncErrors';
 import analyticsRoute from './routes/analytics.route';
+import layoutRouter from './routes/layouts.route';
 
 export const app = express();
 
@@ -44,6 +45,7 @@ app.use('/api/v1/courses', courseRoute);
 app.use('/api/v1/orders', orderRoute);
 app.use('/api/v1/notifications', notiRoute);
 app.use('/api/v1/analytics', analyticsRoute);
+app.use('/api/v1/layouts', layoutRouter);
 
 // unknow route
 app.all('*', (req: Request, res: Response, next: NextFunction) => {
