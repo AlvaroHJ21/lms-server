@@ -3,6 +3,7 @@ import 'dotenv/config';
 import express, { NextFunction, Request, Response } from 'express';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
+import listEndpoints from 'express-list-endpoints';
 
 import errorMiddleware from './middleware/error';
 
@@ -59,3 +60,5 @@ app.all('*', (req: Request, res: Response, next: NextFunction) => {
 });
 
 app.use(errorMiddleware);
+
+// console.log(listEndpoints(app));

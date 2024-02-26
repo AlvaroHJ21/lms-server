@@ -5,8 +5,12 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 import { redis } from '../utils/redis';
 
 // authenticate user
-export const isAuthenticated = catchAsyncError(
-  async (req: Request, res: Response, next: NextFunction) => {
+export const isAuthenticated = async function authenticate(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
     const { access_token } = req.cookies;
 
     if (!access_token) {
@@ -28,13 +32,15 @@ export const isAuthenticated = catchAsyncError(
     req.user = JSON.parse(user);
 
     next();
+  } catch (error) {
+    next(error);
   }
-);
+};
 
 // validatie user role
 
 export const authorizeRoles = (...roles: string[]) => {
-  return (req: Request, res: Response, next: NextFunction) => {
+  return function authorize(req: Request, res: Response, next: NextFunction) {
     if (!roles.includes(req.user.role)) {
       return next(
         new ErrorHandler(403, `Role (${req.user.role}) is not allowed to access this resource`)
