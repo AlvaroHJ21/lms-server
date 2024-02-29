@@ -26,7 +26,7 @@ app.use(express.json({ limit: '50mb' })); // con esto indicamos que el limite de
 app.use(cookieParser());
 
 // cors
-app.use(cors({ origin: process.env.ORIGIN }));
+app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 
 // testing api
 app.get(
